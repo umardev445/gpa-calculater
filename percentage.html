@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+  <title>Percentage Calculator | GPA & Marks Tool</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: #f5f7fb;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      padding: 20px 16px 48px;
+      color: #1e293b;
+    }
+
+    /* Material container */
+    .container {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* Header with back button */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .back-btn {
+      background: white;
+      border: none;
+      font-size: 1.4rem;
+      font-weight: 500;
+      width: 44px;
+      height: 44px;
+      border-radius: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      transition: all 0.2s ease;
+      color: #1e293b;
+      text-decoration: none;
+      background-color: #ffffff;
+    }
+    .back-btn:active {
+      transform: scale(0.94);
+      background-color: #eef2ff;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #1e3c72, #2b3b6e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+    }
+
+    /* Card styles (Material) */
+    .card {
+      background: #ffffff;
+      border-radius: 32px;
+      padding: 24px 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.02);
+      transition: transform 0.1s ease;
+    }
+
+    .input-group {
+      margin-bottom: 22px;
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #475569;
+      letter-spacing: 0.3px;
+    }
+    input {
+      width: 100%;
+      padding: 16px 18px;
+      font-size: 1.05rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 28px;
+      background: #ffffff;
+      transition: all 0.2s;
+      font-weight: 500;
+      color: #0f172a;
+      outline: none;
+    }
+    input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+    input[type="number"]::-webkit-inner-spin-button, 
+    input[type="number"]::-webkit-outer-spin-button {
+      opacity: 0.5;
+    }
+
+    /* Button group */
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 12px;
+    }
+    .btn {
+      flex: 1;
+      padding: 14px 8px;
+      border: none;
+      border-radius: 48px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      background: #f1f5f9;
+      color: #1e293b;
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-primary {
+      background: linear-gradient(105deg, #3b82f6, #2563eb);
+      color: white;
+      box-shadow: 0 4px 8px rgba(37,99,235,0.2);
+    }
+    .btn-primary:active {
+      transform: scale(0.97);
+      background: linear-gradient(105deg, #2563eb, #1d4ed8);
+      box-shadow: 0 2px 4px rgba(37,99,235,0.2);
+    }
+    .btn-outline {
+      background: white;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+    .btn-outline:active {
+      background: #f8fafc;
+      transform: scale(0.97);
+    }
+    .btn-danger {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+    .btn-danger:active {
+      background: #fecaca;
+      transform: scale(0.97);
+    }
+
+    /* Result card highlight */
+    .result-card {
+      background: linear-gradient(135deg, #0f2b3d, #1b4a6e);
+      color: white;
+      text-align: center;
+      border-radius: 40px;
+      padding: 28px 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 18px 28px -12px rgba(0,32,64,0.25);
+    }
+    .result-label {
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+    .percentage-value {
+      font-size: 3.2rem;
+      font-weight: 800;
+      margin: 12px 0 4px;
+      word-break: break-word;
+      letter-spacing: -1px;
+    }
+    .percentage-unit {
+      font-size: 1.3rem;
+      font-weight: 500;
+    }
+
+    /* History section */
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .history-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .clear-btn {
+      background: none;
+      border: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #ef4444;
+      padding: 8px 12px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .clear-btn:active {
+      background: #fee2e2;
+    }
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .history-item {
+      background: #fefefe;
+      border-radius: 28px;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      transition: all 0.2s;
+      border: 1px solid #edf2f7;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .history-details {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 2;
+    }
+    .history-marks {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #334155;
+    }
+    .history-percent {
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #0f3b5c;
+      background: #eef2ff;
+      padding: 4px 12px;
+      border-radius: 60px;
+      display: inline-block;
+    }
+    .history-date {
+      font-size: 0.7rem;
+      color: #6c757d;
+      letter-spacing: 0.2px;
+    }
+    .empty-history {
+      text-align: center;
+      color: #94a3b8;
+      padding: 32px 16px;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive touches */
+    @media (max-width: 480px) {
+      body {
+        padding: 16px 12px 40px;
+      }
+      .card {
+        padding: 20px 16px;
+      }
+      .percentage-value {
+        font-size: 2.6rem;
+      }
+      .history-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .history-percent {
+        align-self: flex-start;
+      }
+    }
+
+    /* smooth animations */
+    .btn, .back-btn, .clear-btn {
+      cursor: pointer;
+    }
+    .fade-in {
+      animation: fadeSlide 0.25s ease-out;
+    }
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    /* touch-friendly spacing */
+    button, .btn {
+      min-height: 48px;
+    }
+    input {
+      font-size: 16px; /* prevents zoom on focus iOS */
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- Header with Back button -->
+  <div class="header">
+    <a href="index.html" class="back-btn" aria-label="Go back to index">←</a>
+    <h1>Percentage Calculator</h1>
+  </div>
+
+  <!-- Input Card -->
+  <div class="card">
+    <div class="input-group">
+      <label>📘 Obtained Marks</label>
+      <input type="number" id="obtainedMarks" placeholder="e.g., 375" value="" step="any" inputmode="decimal">
+    </div>
+    <div class="input-group">
+      <label>📚 Total Marks</label>
+      <input type="number" id="totalMarks" placeholder="e.g., 500" value="" step="any" inputmode="decimal">
+    </div>
+    <div class="button-row">
+      <button id="calcBtn" class="btn btn-primary">✨ Calculate Percentage</button>
+      <button id="resetBtn" class="btn btn-outline">↺ Reset</button>
+    </div>
+  </div>
+
+  <!-- Result Display Card (Gradient Highlight) -->
+  <div class="result-card" id="resultCard">
+    <div class="result-label">Your Percentage</div>
+    <div class="percentage-value" id="percentageDisplay">—</div>
+    <div class="percentage-unit" style="font-size: 0.95rem; opacity:0.8;">out of 100%</div>
+  </div>
+
+  <!-- History Section -->
+  <div class="card" style="padding-bottom: 20px;">
+    <div class="history-header">
+      <span class="history-title">📜 Recent Calculations</span>
+      <button id="clearHistoryBtn" class="clear-btn">🗑 Clear history</button>
+    </div>
+    <div id="historyListContainer" class="history-list">
+      <!-- dynamic history items injected here -->
+      <div class="empty-history">No calculations yet.<br>Enter marks & hit calculate.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // ---------- DOM elements ----------
+    const obtainedInput = document.getElementById('obtainedMarks');
+    const totalInput = document.getElementById('totalMarks');
+    const calcBtn = document.getElementById('calcBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+    const percentageDisplaySpan = document.getElementById('percentageDisplay');
+    const historyContainer = document.getElementById('historyListContainer');
+
+    // ---------- LocalStorage key ----------
+    const STORAGE_KEY = 'percentage_calculator_history';
+
+    // ---------- Helper functions ----------
+    // Format current date/time: "DD/MM/YYYY, HH:MM"
+    function getFormattedDateTime() {
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const year = now.getFullYear();
+      let hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12;
+      return `${day}/${month}/${year}, ${hours}:${minutes} ${ampm}`;
+    }
+
+    // Load history from localStorage (returns array)
+    function loadHistory() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) return parsed;
+        } catch(e) { console.warn(e); }
+      }
+      return [];
+    }
+
+    // Save history array to localStorage
+    function saveHistory(historyArray) {
+      // keep only last 5 items (newest last? we store ascending order, but display descending)
+      // Actually easier: keep unlimited? but spec says last 5 calculations. We'll trim to max 5 entries (most recent)
+      // We'll store chronological order (oldest first, newest appended at end). But display last 5 from end.
+      if (historyArray.length > 5) {
+        historyArray = historyArray.slice(historyArray.length - 5);
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(historyArray));
+      return historyArray;
+    }
+
+    // Add new record (obtained, total, percentage, datetime)
+    function addHistoryRecord(obtained, total, percentage) {
+      let history = loadHistory();
+      const newRecord = {
+        id: Date.now(),
+        obtained: obtained,
+        total: total,
+        percentage: percentage,
+        dateTime: getFormattedDateTime(),
+        timestamp: Date.now()
+      };
+      history.push(newRecord);
+      // keep only last 5 entries
+      if (history.length > 5) {
+        history = history.slice(history.length - 5);
+      }
+      saveHistory(history);
+      renderHistory(history);
+    }
+
+    // clear full history
+    function clearHistory() {
+      saveHistory([]);
+      renderHistory([]);
+      // optional subtle animation
+      const emptyMsg = document.createElement('div');
+    }
+
+    // Remove all history records
+    function resetAllHistory() {
+      saveHistory([]);
+      renderHistory([]);
+    }
+
+    // render history list UI
+    function renderHistory(historyArray) {
+      if (!historyContainer) return;
+      if (!historyArray || historyArray.length === 0) {
+        historyContainer.innerHTML = `<div class="empty-history">✨ No calculations yet.<br>Enter marks & hit calculate.</div>`;
+        return;
+      }
+      // Display in reverse chronological (newest first)
+      const reversed = [...historyArray].reverse();
+      let html = '';
+      for (let item of reversed) {
+        // Format percentage to 2 decimals nicely
+        let percentFormatted = typeof item.percentage === 'number' ? item.percentage.toFixed(2) : item.percentage;
+        html += `
+          <div class="history-item fade-in">
+            <div class="history-details">
+              <div class="history-marks">📊 ${item.obtained} / ${item.total} marks</div>
+              <div class="history-date">⏱️ ${item.dateTime}</div>
+            </div>
+            <div class="history-percent">${percentFormatted}%</div>
+          </div>
+        `;
+      }
+      historyContainer.innerHTML = html;
+    }
+
+    // main calculation logic
+    function calculateAndStore() {
+      // get values as numbers
+      let obtainedRaw = obtainedInput.value.trim();
+      let totalRaw = totalInput.value.trim();
+
+      // edge empty cases
+      if (obtainedRaw === "") {
+        showResultPlaceholder("?");
+        animateResultCard();
+        return;
+      }
+      if (totalRaw === "") {
+        showResultPlaceholder("?");
+        animateResultCard();
+        return;
+      }
+
+      const obtained = parseFloat(obtainedRaw);
+      const total = parseFloat(totalRaw);
+
+      // validation: numbers, non-negative, total > 0
+      if (isNaN(obtained) || isNaN(total)) {
+        showResultPlaceholder("Invalid");
+        animateResultCard();
+        return;
+      }
+      if (total <= 0) {
+        showResultPlaceholder("Total must be > 0");
+        animateResultCard();
+        return;
+      }
+      if (obtained < 0) {
+        showResultPlaceholder("Marks can't be negative");
+        animateResultCard();
+        return;
+      }
+
+      let percentage = (obtained / total) * 100;
+      // round to two decimals
+      let roundedPercentage = Math.round(percentage * 100) / 100;
+      // fix floating edge like 0.000001
+      if (Math.abs(roundedPercentage) < 0.01 && percentage > 0) roundedPercentage = 0.01;
+      if (roundedPercentage > 100 && roundedPercentage < 100.01) roundedPercentage = 100;
+
+      // update big result display
+      displayPercentageValue(roundedPercentage);
+
+      // Add to history (only if valid and we have a clean record)
+      addHistoryRecord(obtained, total, roundedPercentage);
+
+      // slight animation
+      animateResultCard();
+    }
+
+    // display percentage number in result card
+    function displayPercentageValue(percent) {
+      if (typeof percent === 'number' && !isNaN(percent)) {
+        let formatted = percent.toFixed(2);
+        percentageDisplaySpan.innerHTML = `${formatted}<span class="percentage-unit" style="font-size: 1.8rem;">%</span>`;
+      } else {
+        percentageDisplaySpan.innerHTML = `<span style="font-size: 2rem;">—</span>`;
+      }
+    }
+
+    function showResultPlaceholder(message) {
+      if (message === "Invalid" || message === "Total must be > 0" || message === "Marks can't be negative") {
+        percentageDisplaySpan.innerHTML = `<span style="font-size: 1.8rem; font-weight:600;">⚠️ ${message}</span>`;
+      } else {
+        percentageDisplaySpan.innerHTML = `<span style="font-size: 2rem;">—</span>`;
+      }
+    }
+
+    function animateResultCard() {
+      const resultDiv = document.getElementById('resultCard');
+      if (resultDiv) {
+        resultDiv.style.transform = 'scale(0.99)';
+        setTimeout(() => { if(resultDiv) resultDiv.style.transform = ''; }, 120);
+      }
+    }
+
+    // Reset fields (obtained & total) but keep history untouched
+    function resetFields() {
+      obtainedInput.value = '';
+      totalInput.value = '';
+      // reset result display to empty dash
+      percentageDisplaySpan.innerHTML = `<span style="font-size: 2rem;">—</span>`;
+      // remove any leftover validation styles
+      obtainedInput.style.borderColor = '';
+      totalInput.style.borderColor = '';
+      // optional: extra feedback
+      const resultCard = document.getElementById('resultCard');
+      if(resultCard) resultCard.style.transform = 'scale(1)';
+    }
+
+    // Additional utility: ensure auto-load history and display last calculated if needed? not required but load existing.
+    function initialize() {
+      // load history from localStorage
+      const existingHistory = loadHistory();
+      renderHistory(existingHistory);
+      // if there is a valid percentage previously maybe not show stale. But we show dash on start
+      percentageDisplaySpan.innerHTML = `<span style="font-size: 2rem;">—</span>`;
+      // attach input listeners for better usability (optional)
+      // attach enter key support for both inputs
+      const handleEnter = (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          calculateAndStore();
+        }
+      };
+      obtainedInput.addEventListener('keypress', handleEnter);
+      totalInput.addEventListener('keypress', handleEnter);
+      
+      // add smooth feedback for buttons
+      calcBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        calculateAndStore();
+      });
+      resetBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        resetFields();
+      });
+      clearHistoryBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        clearHistory();
+        // optional subtle notification via result (brief)
+        const oldPercent = percentageDisplaySpan.innerText;
+        percentageDisplaySpan.style.transition = '0.1s';
+        percentageDisplaySpan.style.opacity = '0.7';
+        setTimeout(() => {
+          if(percentageDisplaySpan) percentageDisplaySpan.style.opacity = '';
+        }, 150);
+        // we don't clear result values, but history is cleared
+      });
+    }
+
+    // Ensure that if external changes (like index) are okay
+    // Also handle weird negative / invalid updates: additional validation inside calculate
+
+    // In case user changes values and hits reset, also ensure we handle empty strings
+    window.addEventListener('load', () => {
+      initialize();
+    });
+
+    // Edge: update result if needed when last history item selected ? no extra requirements.
+    // provide an additional safeguard to prevent invalid calculations from corrupting history: we already prevent.
+    // Enhance: floating point prettiness
+    // optional: if user wants to see last calculated again, but it's fine.
+    // also provide the "back button" works (href index.html). Offline ready no external deps.
+    // For graceful degradation: if someone opens without index.html, back simply goes to /
+    // add optional style to make result percentage big
+
+    // Reset function also offers removing error states.
+    // Provide better handling of 'total marks' zero scenario feedback and not saving to history
+    // Override addHistoryRecord to avoid saving if calculation invalid? We already only call inside calculation after validation.
+  })();
+</script>
+</body>
+</html>

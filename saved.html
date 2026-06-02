@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>Saved Results - Student GPA & Marks Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(145deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            padding: 20px 16px 40px;
+        }
+
+        /* main container - mobile first */
+        .app-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Header with back button */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            color: #1e2f3a;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .back-btn:active {
+            transform: scale(0.94);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        @media (hover: hover) {
+            .back-btn:hover {
+                transform: translateY(-2px);
+                background: white;
+            }
+        }
+
+        .page-title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            background: linear-gradient(115deg, #1f2f3a, #2c3e50);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        /* action buttons bar */
+        .action-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            flex: 1;
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #eef2f7;
+            color: #1f4e6e;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-primary {
+            background: #2c6e9e;
+            color: white;
+            box-shadow: 0 4px 12px rgba(44, 110, 158, 0.25);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.96);
+            background: #235b84;
+        }
+
+        .btn-danger {
+            background: #fce4e4;
+            color: #b13e3e;
+        }
+
+        .btn-danger:active {
+            transform: scale(0.96);
+            background: #fcd0d0;
+        }
+
+        /* results container - grid / column */
+        .results-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        /* individual result card */
+        .result-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(0px);
+            border-radius: 24px;
+            padding: 18px 20px;
+            box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.25s ease;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            animation: fadeSlideUp 0.3s ease;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* card content left side */
+        .result-info {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .result-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            width: fit-content;
+        }
+
+        .badge-gpa {
+            background: #e3f2fd;
+            color: #1565c0;
+            border-left: 3px solid #1565c0;
+        }
+
+        .badge-percentage {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-left: 3px solid #2e7d32;
+        }
+
+        .result-value {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: #1e2f3a;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+
+        .result-date {
+            font-size: 0.75rem;
+            color: #6c8b9c;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* delete button */
+        .delete-btn {
+            background: rgba(255, 80, 80, 0.1);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 30px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #c62828;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .delete-btn:active {
+            transform: scale(0.92);
+            background: rgba(255, 80, 80, 0.3);
+        }
+
+        @media (hover: hover) {
+            .delete-btn:hover {
+                background: rgba(255, 80, 80, 0.2);
+                transform: scale(1.02);
+            }
+            .result-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 20px 28px -12px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        /* empty state styling */
+        .empty-state {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 32px;
+            padding: 48px 24px;
+            text-align: center;
+            margin: 20px 0;
+            backdrop-filter: blur(2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            animation: fadeSlideUp 0.3s ease;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            opacity: 0.7;
+        }
+
+        .empty-message {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #3f6b7e;
+            margin-bottom: 8px;
+        }
+
+        .empty-sub {
+            font-size: 0.85rem;
+            color: #6f9bb0;
+        }
+
+        /* footer */
+        .footer-note {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.7rem;
+            color: #5f7f8f;
+            padding: 12px;
+            border-top: 1px solid rgba(90, 110, 120, 0.15);
+        }
+
+        /* loading / refresh animation */
+        .refresh-spin {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:active .refresh-spin {
+            transform: rotate(180deg);
+        }
+
+        /* responsive adjustments */
+        @media (min-width: 600px) {
+            body {
+                padding: 32px 24px;
+            }
+            .page-title {
+                font-size: 2.2rem;
+            }
+            .result-value {
+                font-size: 2rem;
+            }
+            .result-card {
+                padding: 20px 24px;
+            }
+            .action-bar {
+                gap: 16px;
+            }
+        }
+
+        /* delete animation */
+        .removing {
+            animation: fadeOut 0.2s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: scale(0.95);
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <!-- Header with back button -->
+    <div class="header">
+        <a href="index.html" class="back-btn" aria-label="Back to Home">←</a>
+        <h1 class="page-title">Saved Results</h1>
+    </div>
+
+    <!-- Action Buttons: Refresh & Clear All -->
+    <div class="action-bar">
+        <button class="btn btn-primary" id="refreshBtn">
+            <span class="refresh-spin">🔄</span> Refresh
+        </button>
+        <button class="btn btn-danger" id="clearAllBtn">
+            🗑️ Clear All
+        </button>
+    </div>
+
+    <!-- Results will be injected here -->
+    <div id="resultsContainer" class="results-container">
+        <!-- dynamic cards or empty state -->
+    </div>
+
+    <div class="footer-note">
+        💾 Results are saved automatically when you calculate GPA or Percentage
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---------- Storage Keys ----------
+        const STORAGE_KEY = 'savedResultsList';   // array of result objects
+
+        // DOM Elements
+        const resultsContainer = document.getElementById('resultsContainer');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+
+        // ---------- Helper Functions ----------
+        // Load results from localStorage
+        function loadResultsFromStorage() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) {
+                        return parsed;
+                    }
+                } catch (e) {
+                    console.warn("Failed to parse saved results", e);
+                }
+            }
+            return [];
+        }
+
+        // Save results array to localStorage
+        function saveResultsToStorage(resultsArray) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(resultsArray));
+        }
+
+        // Helper: format date nicely (input: stored date string or ISO)
+        function formatDisplayDate(dateInput) {
+            try {
+                let dateObj;
+                if (dateInput instanceof Date) {
+                    dateObj = dateInput;
+                } else {
+                    dateObj = new Date(dateInput);
+                }
+                // Check valid date
+                if (isNaN(dateObj.getTime())) {
+                    return "Invalid date";
+                }
+                // Format: "Jan 15, 2026 • 2:30 PM"
+                const options = { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+                return dateObj.toLocaleString(undefined, options);
+            } catch (err) {
+                return String(dateInput) || "Unknown date";
+            }
+        }
+
+        // render all result cards or empty state
+        function renderResults() {
+            const results = loadResultsFromStorage();
+            
+            if (!resultsContainer) return;
+            
+            // clear container
+            resultsContainer.innerHTML = '';
+            
+            if (results.length === 0) {
+                // Empty State UI
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'empty-state';
+                emptyDiv.innerHTML = `
+                    <div class="empty-icon">📭</div>
+                    <div class="empty-message">No Saved Results Found</div>
+                    <div class="empty-sub">Save GPA or Percentage results from calculators</div>
+                `;
+                resultsContainer.appendChild(emptyDiv);
+                return;
+            }
+            
+            // Reverse chronological order (newest first) — optional but nice
+            const sortedResults = [...results].reverse();
+            
+            sortedResults.forEach((result, originalReversedIndex) => {
+                // To get original index for deletion we need original index from stored array? better to use unique id or timestamp.
+                // But each result might have duplicate values, but we use index in original array.
+                // We'll store the original index reference based on position in main stored array (not reversed).
+                // Actually safer: we find the item by its unique timestamp/id, but since we allow duplicates, we can use a unique id per record.
+                // To guarantee correct deletion, each saved item should have unique id. Let's enforce structure: include id (timestamp+random)
+                // Migration: if old data doesn't have id, we assign on load.
+                const originalResults = loadResultsFromStorage();
+                // find matching item by comparing full object reference? Not safe, we'll find index by checking value+type+date equivalence
+                // But easier: each item will be given an 'id' field. We'll initialize storage with ids.
+                // For backwards compatibility, we assign ids during load.
+                let targetIndex = -1;
+                for (let i = 0; i < originalResults.length; i++) {
+                    const item = originalResults[i];
+                    if (item.id && result.id && item.id === result.id) {
+                        targetIndex = i;
+                        break;
+                    } else if (!item.id && !result.id && 
+                               item.type === result.type && 
+                               item.value === result.value && 
+                               item.date === result.date) {
+                        // fallback for legacy items without id
+                        targetIndex = i;
+                        break;
+                    }
+                }
+                const deleteIndex = targetIndex;
+                
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.setAttribute('data-result-id', result.id || `legacy_${Date.now()}_${Math.random()}`);
+                
+                const badgeClass = result.type === 'GPA' ? 'badge-gpa' : 'badge-percentage';
+                const typeIcon = result.type === 'GPA' ? '📊' : '📈';
+                const formattedDate = formatDisplayDate(result.date);
+                const displayValue = result.type === 'GPA' ? `${result.value} GPA` : `${result.value}%`;
+                
+                card.innerHTML = `
+                    <div class="result-info">
+                        <div class="result-type-badge ${badgeClass}">
+                            <span>${typeIcon}</span> ${result.type}
+                        </div>
+                        <div class="result-value">${escapeHtml(displayValue)}</div>
+                        <div class="result-date">
+                            <span>🕒</span> ${escapeHtml(formattedDate)}
+                        </div>
+                    </div>
+                    <button class="delete-btn" data-delete-index="${deleteIndex}" data-unique-id="${result.id || ''}" aria-label="Delete result">
+                        🗑️
+                    </button>
+                `;
+                
+                resultsContainer.appendChild(card);
+            });
+            
+            // Attach delete events to all delete buttons
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // get index from attribute
+                    let indexAttr = btn.getAttribute('data-delete-index');
+                    if (indexAttr !== null && indexAttr !== undefined && indexAttr !== 'undefined') {
+                        const idx = parseInt(indexAttr, 10);
+                        if (!isNaN(idx)) {
+                            deleteSingleResult(idx);
+                        } else {
+                            // fallback: try to match by unique id
+                            const uniqueId = btn.getAttribute('data-unique-id');
+                            if (uniqueId) deleteResultByUniqueId(uniqueId);
+                        }
+                    } else {
+                        const uniqueId = btn.getAttribute('data-unique-id');
+                        if (uniqueId) deleteResultByUniqueId(uniqueId);
+                    }
+                });
+            });
+        }
+        
+        // Helper: escape HTML
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
+        // Delete single result by index (original array index)
+        function deleteSingleResult(index) {
+            if (index === undefined || index < 0) return;
+            let results = loadResultsFromStorage();
+            if (index >= 0 && index < results.length) {
+                // add removal animation to the targeted card
+                const cards = document.querySelectorAll('.result-card');
+                // try to find card that corresponds to this index (since we reversed in render, need mapping)
+                // Simpler: find card by data attribute with matching id or using index mapping? We'll just update storage and re-render with smooth effect.
+                // But to have animation we can remove the specific card with animation class before re-render
+                let cardToRemove = null;
+                for (let card of cards) {
+                    const btn = card.querySelector('.delete-btn');
+                    if (btn) {
+                        const idxAttr = btn.getAttribute('data-delete-index');
+                        if (idxAttr && parseInt(idxAttr, 10) === index) {
+                            cardToRemove = card;
+                            break;
+                        }
+                    }
+                }
+                if (cardToRemove) {
+                    cardToRemove.classList.add('removing');
+                    setTimeout(() => {
+                        results.splice(index, 1);
+                        saveResultsToStorage(results);
+                        renderResults();
+                    }, 150);
+                } else {
+                    // fallback immediate
+                    results.splice(index, 1);
+                    saveResultsToStorage(results);
+                    renderResults();
+                }
+            } else {
+                console.warn("Invalid index for deletion");
+            }
+        }
+        
+        // Delete by unique ID (more robust)
+        function deleteResultByUniqueId(uniqueId) {
+            if (!uniqueId) return;
+            let results = loadResultsFromStorage();
+            const foundIndex = results.findIndex(item => item.id === uniqueId);
+            if (foundIndex !== -1) {
+                // find card with that id for animation
+                const cards = document.querySelectorAll('.result-card');
+                let targetCard = null;
+                for (let card of cards) {
+                    const cardId = card.getAttribute('data-result-id');
+                    if (cardId === uniqueId) {
+                        targetCard = card;
+                        break;
+                    }
+                }
+                if (targetCard) {
+                    targetCard.classList.add('removing');
+                    setTimeout(() => {
+                        results.splice(foundIndex, 1);
+                        saveResultsToStorage(results);
+                        renderResults();
+                    }, 150);
+                } else {
+                    results.splice(foundIndex, 1);
+                    saveResultsToStorage(results);
+                    renderResults();
+                }
+            } else {
+                // fallback: try old method
+                console.log("id not found, no action");
+            }
+        }
+        
+        // Clear all results with confirmation
+        function clearAllResults() {
+            const results = loadResultsFromStorage();
+            if (results.length === 0) {
+                alert("No saved results to clear.");
+                return;
+            }
+            if (confirm("⚠️ Are you sure you want to delete ALL saved results? This action cannot be undone.")) {
+                localStorage.removeItem(STORAGE_KEY);
+                renderResults();
+                // optional subtle success feedback
+                showTemporaryMessage("All results cleared", "#2c6e9e");
+            }
+        }
+        
+        // Temporary feedback message (lightweight)
+        function showTemporaryMessage(msg, bgColor = "#2c6e9e") {
+            let toast = document.createElement('div');
+            toast.textContent = msg;
+            toast.style.position = "fixed";
+            toast.style.bottom = "30px";
+            toast.style.left = "50%";
+            toast.style.transform = "translateX(-50%)";
+            toast.style.backgroundColor = bgColor;
+            toast.style.color = "white";
+            toast.style.padding = "10px 20px";
+            toast.style.borderRadius = "50px";
+            toast.style.fontSize = "0.85rem";
+            toast.style.fontWeight = "500";
+            toast.style.zIndex = "1000";
+            toast.style.boxShadow = "0 6px 14px rgba(0,0,0,0.2)";
+            toast.style.backdropFilter = "blur(8px)";
+            toast.style.opacity = "0";
+            toast.style.transition = "opacity 0.2s";
+            document.body.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = "1"; }, 10);
+            setTimeout(() => {
+                toast.style.opacity = "0";
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+        
+        // Refresh: reload data from localStorage and refresh UI
+        function refreshData() {
+            renderResults();
+            // subtle refresh animation effect
+            const refreshIcon = refreshBtn.querySelector('.refresh-spin');
+            if (refreshIcon) {
+                refreshIcon.style.transform = 'rotate(360deg)';
+                setTimeout(() => {
+                    if (refreshIcon) refreshIcon.style.transform = '';
+                }, 400);
+            }
+            showTemporaryMessage("Results reloaded", "#4a6f8f");
+        }
+        
+        // Storage migration: ensure all saved items have unique id and date format consistency
+        function migrateAndFixStorage() {
+            let results = loadResultsFromStorage();
+            let changed = false;
+            for (let i = 0; i < results.length; i++) {
+                const item = results[i];
+                if (!item.id) {
+                    // generate unique id based on timestamp + index + random
+                    item.id = `result_${Date.now()}_${i}_${Math.random().toString(36).substr(2, 6)}`;
+                    changed = true;
+                }
+                if (!item.date || item.date === "Invalid date") {
+                    // if no date, set current fallback
+                    item.date = new Date().toISOString();
+                    changed = true;
+                }
+                // ensure type exists
+                if (item.type !== 'GPA' && item.type !== 'Percentage') {
+                    item.type = item.type === 'GPA' ? 'GPA' : 'Percentage';
+                    changed = true;
+                }
+            }
+            if (changed) {
+                saveResultsToStorage(results);
+            }
+        }
+        
+        // Additional function: to allow external pages (like GPA/percentage pages) to push results.
+        // This page only displays. But for completeness, we expose a helper for testing but not required.
+        window.SavedResultsAPI = {
+            addResult: function(type, value) {
+                if (type !== 'GPA' && type !== 'Percentage') return false;
+                const results = loadResultsFromStorage();
+                const newResult = {
+                    id: `result_${Date.now()}_${Math.random().toString(36).substr(2, 8)}`,
+                    type: type,
+                    value: String(value),
+                    date: new Date().toISOString()
+                };
+                results.push(newResult);
+                saveResultsToStorage(results);
+                // if this page is active, refresh display
+                if (resultsContainer) renderResults();
+                return true;
+            }
+        };
+        
+        // Event Listeners
+        if (refreshBtn) refreshBtn.addEventListener('click', refreshData);
+        if (clearAllBtn) clearAllBtn.addEventListener('click', clearAllResults);
+        
+        // Initialize: migrate, render
+        migrateAndFixStorage();
+        renderResults();
+        
+        // Optional: listen to storage events from other tabs (sync)
+        window.addEventListener('storage', (e) => {
+            if (e.key === STORAGE_KEY) {
+                renderResults();
+            }
+        });
+    })();
+</script>
+</body>
+</html>

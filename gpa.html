@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>GPA Calculator - Student GPA & Marks Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(145deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            padding: 20px 16px 40px;
+        }
+
+        /* main container */
+        .app-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* header with back button */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            color: #1e2f3a;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .back-btn:active {
+            transform: scale(0.94);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        @media (hover: hover) {
+            .back-btn:hover {
+                transform: translateY(-2px);
+                background: white;
+            }
+        }
+
+        .page-title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            background: linear-gradient(115deg, #1f2f3a, #2c3e50);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        /* card styles */
+        .card {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(0px);
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.02);
+            transition: box-shadow 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1e3a4d;
+            margin-bottom: 18px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #cbdde6;
+            display: inline-block;
+        }
+
+        /* input group */
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2c5368;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 1rem;
+            border: 1.5px solid #dce5ec;
+            border-radius: 20px;
+            background: #ffffff;
+            transition: all 0.2s;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: #3c8db5;
+            box-shadow: 0 0 0 3px rgba(60, 141, 181, 0.2);
+        }
+
+        .input-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .input-row .input-group {
+            flex: 1;
+        }
+
+        /* buttons */
+        .btn {
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            background: #eef2f7;
+            color: #1f4e6e;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-primary {
+            background: #2c6e9e;
+            color: white;
+            box-shadow: 0 4px 12px rgba(44, 110, 158, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.96);
+            background: #235b84;
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #2c5a74;
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.96);
+        }
+
+        .btn-danger {
+            background: #fce4e4;
+            color: #b13e3e;
+        }
+
+        .btn-danger:active {
+            transform: scale(0.96);
+        }
+
+        .btn-success {
+            background: #2c9e6e;
+            color: white;
+            box-shadow: 0 4px 10px rgba(44, 158, 110, 0.3);
+        }
+
+        .action-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        /* subject list table style (cards) */
+        .subjects-list {
+            margin-top: 8px;
+        }
+
+        .subject-item {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            transition: all 0.2s;
+            border: 1px solid #e2edf2;
+        }
+
+        .subject-info {
+            flex: 3;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: baseline;
+        }
+
+        .subject-name {
+            font-weight: 700;
+            color: #1a4d62;
+            min-width: 100px;
+            font-size: 1rem;
+        }
+
+        .subject-detail {
+            font-size: 0.85rem;
+            color: #4f6f7f;
+            background: #ffffffd0;
+            padding: 4px 10px;
+            border-radius: 40px;
+        }
+
+        .grade-point-badge {
+            background: #d9eef5;
+            padding: 5px 12px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #1c6d8f;
+        }
+
+        .delete-subject {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 40px;
+            transition: all 0.15s;
+            color: #b8655a;
+        }
+
+        .delete-subject:active {
+            transform: scale(0.9);
+            background: #ffe0db;
+        }
+
+        /* result box */
+        .result-card {
+            background: linear-gradient(135deg, #eef9f0, #e0f2e9);
+            border-radius: 28px;
+            padding: 24px;
+            text-align: center;
+            border-left: 6px solid #2c9e6e;
+        }
+
+        .gpa-value {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: #1e6b46;
+            letter-spacing: -0.5px;
+            word-break: break-word;
+        }
+
+        .gpa-label {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #2c5a4a;
+            margin-top: 6px;
+        }
+
+        .calc-date {
+            font-size: 0.75rem;
+            color: #5f8b7a;
+            margin-top: 12px;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 28px;
+            color: #6b8b9b;
+            font-style: italic;
+        }
+
+        /* responsive */
+        @media (min-width: 600px) {
+            body {
+                padding: 32px 24px;
+            }
+            .card {
+                padding: 28px;
+            }
+            .page-title {
+                font-size: 2.2rem;
+            }
+            .subject-info {
+                flex: 4;
+            }
+        }
+
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subject-item {
+            animation: fadeSlide 0.2s ease;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: #527a8a;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <!-- Header with back button -->
+    <div class="header">
+        <a href="index.html" class="back-btn" aria-label="Back to Home">←</a>
+        <h1 class="page-title">GPA Calculator</h1>
+    </div>
+
+    <!-- Input Section Card -->
+    <div class="card">
+        <h2 class="card-title">➕ Add Subject</h2>
+        <div class="input-group">
+            <label>Subject Name</label>
+            <input type="text" id="subjectName" placeholder="e.g., Mathematics" autocomplete="off">
+        </div>
+        <div class="input-row">
+            <div class="input-group">
+                <label>Marks (0–100)</label>
+                <input type="number" id="marksObtained" min="0" max="100" step="1" placeholder="0-100">
+            </div>
+            <div class="input-group">
+                <label>Credit Hours (1–5)</label>
+                <input type="number" id="creditHours" min="1" max="5" step="1" placeholder="1-5">
+            </div>
+        </div>
+        <button class="btn btn-primary" id="addSubjectBtn" style="width: 100%; margin-top: 8px;">+ Add Subject</button>
+    </div>
+
+    <!-- Subjects List Section -->
+    <div class="card">
+        <h2 class="card-title">📚 Subjects List</h2>
+        <div id="subjectsContainer">
+            <div class="empty-message">No subjects added yet. Add your first subject above ✨</div>
+        </div>
+        <div class="action-group">
+            <button class="btn btn-secondary" id="clearAllBtn">🗑 Clear All</button>
+            <button class="btn btn-secondary" id="resetBtn">⟳ Reset</button>
+        </div>
+    </div>
+
+    <!-- Calculate GPA Button & Result -->
+    <div class="card" style="padding-bottom: 20px;">
+        <button class="btn btn-success" id="calculateGpaBtn" style="width: 100%; padding: 14px;">📊 Calculate GPA</button>
+    </div>
+
+    <!-- Result Display Card -->
+    <div class="result-card" id="resultCard">
+        <div class="gpa-value" id="gpaDisplay">—</div>
+        <div class="gpa-label">Your GPA</div>
+        <div class="calc-date" id="calcDateDisplay"></div>
+    </div>
+    <footer>Made for Students — offline & local storage ready</footer>
+</div>
+
+<script>
+    (function() {
+        // ---------- Data ----------
+        let subjects = [];  // each: { name, marks, creditHours, gradePoint }
+
+        // DOM elements
+        const subjectNameInput = document.getElementById('subjectName');
+        const marksInput = document.getElementById('marksObtained');
+        const creditInput = document.getElementById('creditHours');
+        const addBtn = document.getElementById('addSubjectBtn');
+        const subjectsContainer = document.getElementById('subjectsContainer');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const calculateBtn = document.getElementById('calculateGpaBtn');
+        const gpaDisplaySpan = document.getElementById('gpaDisplay');
+        const calcDateSpan = document.getElementById('calcDateDisplay');
+
+        // Helper: convert marks to grade point (according to rules)
+        function marksToGradePoint(marks) {
+            if (marks >= 90 && marks <= 100) return 4.0;
+            if (marks >= 80 && marks <= 89) return 3.5;
+            if (marks >= 70 && marks <= 79) return 3.0;
+            if (marks >= 60 && marks <= 69) return 2.5;
+            if (marks >= 50 && marks <= 59) return 2.0;
+            return 0.0;
+        }
+
+        // Save subjects array to localStorage
+        function saveToLocalStorage() {
+            const dataToStore = subjects.map(sub => ({
+                name: sub.name,
+                marks: sub.marks,
+                creditHours: sub.creditHours,
+                gradePoint: sub.gradePoint
+            }));
+            localStorage.setItem('gpaCalculatorSubjects', JSON.stringify(dataToStore));
+            // also store last calculation separately (only GPA result with date, but will recompute anyway)
+            // we keep last GPA result snapshot optionally for display? will be recalc on load
+        }
+
+        // Load subjects from localStorage
+        function loadFromLocalStorage() {
+            const stored = localStorage.getItem('gpaCalculatorSubjects');
+            if (stored) {
+                try {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) {
+                        subjects = parsed;
+                    } else {
+                        subjects = [];
+                    }
+                } catch(e) { subjects = []; }
+            } else {
+                subjects = [];
+            }
+            renderSubjectList();
+            // Optionally show previously calculated GPA? We'll just clear result display and recalc if needed
+            clearGpaResultDisplay();
+        }
+
+        // Render the subject list (dynamic cards)
+        function renderSubjectList() {
+            if (!subjectsContainer) return;
+            if (subjects.length === 0) {
+                subjectsContainer.innerHTML = `<div class="empty-message">No subjects added yet. Add your first subject above ✨</div>`;
+                return;
+            }
+
+            const containerHtml = document.createElement('div');
+            containerHtml.className = 'subjects-list';
+            
+            subjects.forEach((subject, index) => {
+                const subjectDiv = document.createElement('div');
+                subjectDiv.className = 'subject-item';
+                subjectDiv.setAttribute('data-idx', index);
+                
+                // format marks & credit & grade point
+                const gradePointFixed = subject.gradePoint.toFixed(2);
+                subjectDiv.innerHTML = `
+                    <div class="subject-info">
+                        <span class="subject-name">${escapeHtml(subject.name)}</span>
+                        <span class="subject-detail">📊 ${subject.marks} marks</span>
+                        <span class="subject-detail">📘 ${subject.creditHours} cr</span>
+                        <span class="grade-point-badge">⭐ ${gradePointFixed} GP</span>
+                    </div>
+                    <button class="delete-subject" data-index="${index}" aria-label="Delete subject">🗑️</button>
+                `;
+                containerHtml.appendChild(subjectDiv);
+            });
+            
+            // clear and append new
+            subjectsContainer.innerHTML = '';
+            subjectsContainer.appendChild(containerHtml);
+            
+            // attach delete events
+            document.querySelectorAll('.delete-subject').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const idx = parseInt(btn.getAttribute('data-index'), 10);
+                    if (!isNaN(idx)) {
+                        deleteSubject(idx);
+                    }
+                });
+            });
+        }
+        
+        // simple escape to prevent XSS
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+                return c;
+            });
+        }
+        
+        // delete single subject
+        function deleteSubject(index) {
+            if (index >= 0 && index < subjects.length) {
+                subjects.splice(index, 1);
+                renderSubjectList();
+                saveToLocalStorage();
+                clearGpaResultDisplay(); // clear old result after modification
+            }
+        }
+        
+        // add new subject
+        function addSubject() {
+            let name = subjectNameInput.value.trim();
+            if (name === "") {
+                alert("Please enter a subject name.");
+                return;
+            }
+            let marksRaw = marksInput.value.trim();
+            let creditRaw = creditInput.value.trim();
+            
+            if (marksRaw === "") {
+                alert("Please enter marks obtained (0-100).");
+                return;
+            }
+            if (creditRaw === "") {
+                alert("Please enter credit hours (1-5).");
+                return;
+            }
+            
+            let marks = parseFloat(marksRaw);
+            let creditHours = parseFloat(creditRaw);
+            
+            if (isNaN(marks) || marks < 0 || marks > 100) {
+                alert("Marks must be a number between 0 and 100.");
+                return;
+            }
+            if (isNaN(creditHours) || creditHours < 1 || creditHours > 5) {
+                alert("Credit hours must be a number between 1 and 5.");
+                return;
+            }
+            
+            // round to 2 decimals if needed but keep as number
+            const gradePoint = marksToGradePoint(marks);
+            
+            const newSubject = {
+                name: name,
+                marks: marks,
+                creditHours: creditHours,
+                gradePoint: gradePoint
+            };
+            subjects.push(newSubject);
+            
+            // clear inputs after adding
+            subjectNameInput.value = "";
+            marksInput.value = "";
+            creditInput.value = "";
+            
+            renderSubjectList();
+            saveToLocalStorage();
+            clearGpaResultDisplay();
+            
+            // optional focus back to subject name
+            subjectNameInput.focus();
+        }
+        
+        // Calculate GPA based on current subjects array
+        function calculateGPA() {
+            if (subjects.length === 0) {
+                alert("No subjects added. Please add subjects before calculating GPA.");
+                return null;
+            }
+            
+            let totalGradePointsWeighted = 0;
+            let totalCredits = 0;
+            
+            for (let sub of subjects) {
+                const gp = sub.gradePoint;
+                const credits = sub.creditHours;
+                totalGradePointsWeighted += gp * credits;
+                totalCredits += credits;
+            }
+            
+            if (totalCredits === 0) {
+                return 0;
+            }
+            
+            const gpa = totalGradePointsWeighted / totalCredits;
+            // round to 2 decimal places
+            return Math.round(gpa * 100) / 100;
+        }
+        
+        // update result display and save GPA with timestamp to localStorage
+        function updateResultDisplay() {
+            const gpa = calculateGPA();
+            if (gpa === null) return;
+            
+            if (subjects.length === 0) {
+                gpaDisplaySpan.textContent = "—";
+                calcDateSpan.textContent = "";
+                // Also remove from local saved result?
+                localStorage.removeItem('lastGpaResult');
+                return;
+            }
+            
+            gpaDisplaySpan.textContent = gpa.toFixed(2);
+            const now = new Date();
+            const formattedDate = now.toLocaleString(undefined, { hour12: true, dateStyle: 'medium', timeStyle: 'short' });
+            calcDateSpan.textContent = `📅 Last calculation: ${formattedDate}`;
+            
+            // Save GPA result and date to localStorage separately for persistence (optional extra)
+            const resultData = {
+                gpa: gpa.toFixed(2),
+                date: now.toISOString(),
+                formattedDate: formattedDate
+            };
+            localStorage.setItem('lastGpaResult', JSON.stringify(resultData));
+        }
+        
+        // clear result display on UI when subjects change
+        function clearGpaResultDisplay() {
+            if (subjects.length === 0) {
+                gpaDisplaySpan.textContent = "—";
+                calcDateSpan.textContent = "";
+                localStorage.removeItem('lastGpaResult');
+            } else {
+                // do not auto-clear completely, but we might keep previous result? better to show blank until recalc
+                // however design: after adding subject the GPA box should be refreshed? requirement: button calculates.
+                // So we set to "not calculated yet" style
+                gpaDisplaySpan.textContent = "—";
+                calcDateSpan.textContent = "Click 'Calculate GPA' to see result";
+            }
+        }
+        
+        // Clear all subjects
+        function clearAllSubjects() {
+            if (subjects.length > 0 && confirm("Are you sure you want to remove ALL subjects?")) {
+                subjects = [];
+                renderSubjectList();
+                saveToLocalStorage();
+                clearGpaResultDisplay();
+                gpaDisplaySpan.textContent = "—";
+                calcDateSpan.textContent = "";
+                localStorage.removeItem('lastGpaResult');
+            } else if (subjects.length === 0) {
+                alert("No subjects to clear.");
+            }
+        }
+        
+        // Reset: clear all subjects + reset inputs + result
+        function resetAll() {
+            if (confirm("Reset will delete all subjects and clear form fields. Continue?")) {
+                subjects = [];
+                renderSubjectList();
+                saveToLocalStorage();
+                // reset input fields
+                subjectNameInput.value = "";
+                marksInput.value = "";
+                creditInput.value = "";
+                gpaDisplaySpan.textContent = "—";
+                calcDateSpan.textContent = "";
+                localStorage.removeItem('lastGpaResult');
+            }
+        }
+        
+        // Load stored GPA result (if any) from last time calculation and show on initial load
+        function restoreLastGpaDisplay() {
+            const storedResult = localStorage.getItem('lastGpaResult');
+            if (storedResult && subjects.length > 0) {
+                try {
+                    const result = JSON.parse(storedResult);
+                    if (result.gpa && result.formattedDate) {
+                        // but we need to recalc to ensure consistency with current subjects? Ideally calculate fresh.
+                        // For integrity we can either show stored OR recalc. Better to recalc automatically? 
+                        // To avoid stale data, we don't auto restore, instead we show "click calculate"
+                        // but we can just leave placeholder.
+                        // However we add a feature: if subjects are present, we can display fresh GPA automatically? 
+                        // Requirement didn't demand auto recalc, only button. So we keep neutral.
+                        // optional: display last calculated info only if they pressed calculate previously.
+                        // but we will not auto compute on load to respect explicit calculate button.
+                        // Instead we check if there's a valid last result and subjects not changed? can't guarantee.
+                        // So better to keep neutral, user must click calculate button -> update accordingly.
+                    }
+                } catch(e) {}
+            }
+            // Ensure if subjects exist but no result shown just clear msg
+            if (subjects.length > 0) {
+                calcDateSpan.textContent = "Press 'Calculate GPA' to get result";
+                gpaDisplaySpan.textContent = "—";
+            } else {
+                calcDateSpan.textContent = "";
+            }
+        }
+        
+        // event binding for calculate button: calculate and update display
+        function handleCalculate() {
+            if (subjects.length === 0) {
+                alert("No subjects added. Please add at least one subject.");
+                return;
+            }
+            // recalc GPA based on current subjects (grade points already stored with each subject)
+            // ensure grade point synced: marks might have changed? we never modify marks after addition, but it's fine
+            // if in future we had edit, we update gradePoint on add. So safe.
+            const gpa = calculateGPA();
+            if (gpa !== null) {
+                updateResultDisplay();
+            } else {
+                alert("Unable to calculate GPA.");
+            }
+        }
+        
+        // Ensure that grade points are consistent on load (just in case)
+        function syncGradePoints() {
+            for (let sub of subjects) {
+                // recompute grade point based on marks (consistency)
+                sub.gradePoint = marksToGradePoint(sub.marks);
+            }
+            if (subjects.length) renderSubjectList();
+            saveToLocalStorage();
+        }
+        
+        // event listeners
+        addBtn.addEventListener('click', addSubject);
+        clearAllBtn.addEventListener('click', clearAllSubjects);
+        resetBtn.addEventListener('click', resetAll);
+        calculateBtn.addEventListener('click', handleCalculate);
+        
+        // Enter key in input fields (marks/credit/name) triggers add subject for convenience
+        const inputs = [subjectNameInput, marksInput, creditInput];
+        inputs.forEach(inp => {
+            inp.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addSubject();
+                }
+            });
+        });
+        
+        // initial load
+        loadFromLocalStorage();
+        syncGradePoints();   // ensure grade points reflect current marks
+        restoreLastGpaDisplay();
+        // if there are subjects, display hint
+        if (subjects.length === 0) {
+            calcDateSpan.textContent = "";
+        } else {
+            calcDateSpan.textContent = "Press 'Calculate GPA' to get result";
+        }
+    })();
+</script>
+</body>
+</html>

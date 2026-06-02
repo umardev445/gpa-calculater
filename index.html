@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>Student GPA & Marks Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(145deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            padding: 24px 20px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* main container - mobile first, centered width */
+        .app-container {
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* header + logo section */
+        .app-header {
+            text-align: center;
+            margin-bottom: 32px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .app-logo {
+            width: 88px;
+            height: 88px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(2px);
+            transition: transform 0.2s ease;
+        }
+
+        .app-logo:hover {
+            transform: scale(1.02);
+        }
+
+        /* placeholder image (gradient + icon simulation) */
+        .placeholder-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #3c6e71, #284b63);
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 600;
+            color: white;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .app-title {
+            font-size: 1.85rem;
+            font-weight: 700;
+            background: linear-gradient(115deg, #1f2f3a, #2c3e50);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            margin-top: 8px;
+            text-shadow: 0 2px 4px rgba(255,255,255,0.3);
+        }
+
+        /* card grid - mobile: 1 column, tablet/desktop: 2 columns */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin: 28px 0 40px;
+        }
+
+        /* card button style */
+        .feature-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(0px);
+            border-radius: 24px;
+            padding: 28px 20px 28px;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            will-change: transform;
+        }
+
+        /* hover effect for mouse, but also tap feedback */
+        .feature-card:active {
+            transform: scale(0.97);
+            transition: transform 0.1s ease;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (hover: hover) {
+            .feature-card:hover {
+                transform: translateY(-6px);
+                background: rgba(255, 255, 255, 0.98);
+                box-shadow: 0 28px 38px -14px rgba(0, 0, 0, 0.25);
+                border-color: rgba(255,255,240,0.8);
+            }
+        }
+
+        /* card inner elements */
+        .card-icon {
+            font-size: 3.2rem;
+            font-weight: 500;
+            background: #f1f5f9;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 40px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 12px -6px rgba(0, 0, 0, 0.1);
+            transition: background 0.2s;
+        }
+
+        .feature-card:active .card-icon {
+            background: #e9eef3;
+        }
+
+        .card-title {
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: #1e2a36;
+            margin-bottom: 8px;
+            letter-spacing: -0.2px;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: #4b5e6c;
+            font-weight: 450;
+            max-width: 220px;
+            margin-top: 4px;
+        }
+
+        /* footer */
+        .app-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px 12px 8px;
+            border-top: 1px solid rgba(60, 80, 90, 0.15);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #2c4c5c;
+            letter-spacing: 0.3px;
+            background: transparent;
+        }
+
+        .footer-text {
+            background: rgba(255, 250, 240, 0.5);
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 60px;
+            backdrop-filter: blur(2px);
+            font-weight: 500;
+        }
+
+        /* tablet & desktop breakpoint: 2 columns */
+        @media (min-width: 600px) {
+            body {
+                padding: 32px 28px 48px;
+            }
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 28px;
+            }
+            .app-title {
+                font-size: 2.2rem;
+            }
+            .app-logo {
+                width: 100px;
+                height: 100px;
+            }
+            .placeholder-icon {
+                width: 74px;
+                height: 74px;
+                font-size: 42px;
+            }
+            .card-icon {
+                width: 90px;
+                height: 90px;
+                font-size: 3.6rem;
+            }
+            .card-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* extra large screens: keep grid but center nicely */
+        @media (min-width: 1024px) {
+            .cards-grid {
+                gap: 36px;
+            }
+            .feature-card {
+                padding: 32px 24px;
+            }
+        }
+
+        /* tiny mobile optimization */
+        @media (max-width: 420px) {
+            body {
+                padding: 20px 16px 32px;
+            }
+            .card-title {
+                font-size: 1.5rem;
+            }
+            .card-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 2.6rem;
+            }
+            .app-title {
+                font-size: 1.65rem;
+            }
+        }
+
+        /* simple fade in */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ripple / tap effect for better touch feedback */
+        .feature-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* fallback if js disabled but all links are functional */
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <!-- header with logo + title -->
+    <div class="app-header">
+        <div class="logo-wrapper">
+            <div class="app-logo">
+                <!-- placeholder image (material style monogram / icon) -->
+                <div class="placeholder-icon" aria-label="App logo: graduation cap symbol">🎓</div>
+            </div>
+        </div>
+        <h1 class="app-title">Student GPA & Marks Calculator</h1>
+    </div>
+
+    <!-- 4 clickable card buttons: GPA, Percentage, Saved, About -->
+    <div class="cards-grid" id="cardsGrid">
+        <!-- GPA Calculator Card -->
+        <a href="gpa.html" class="feature-card" id="gpaCard" data-analytic="gpa">
+            <div class="card-icon">📊</div>
+            <div class="card-title">GPA Calculator</div>
+            <div class="card-desc">Semester & cumulative GPA</div>
+        </a>
+
+        <!-- Percentage Calculator Card -->
+        <a href="percentage.html" class="feature-card" id="percentCard" data-analytic="percentage">
+            <div class="card-icon">📈</div>
+            <div class="card-title">Percentage Calculator</div>
+            <div class="card-desc">Convert marks & percentages</div>
+        </a>
+
+        <!-- Saved Results Card -->
+        <a href="saved.html" class="feature-card" id="savedCard" data-analytic="saved">
+            <div class="card-icon">💾</div>
+            <div class="card-title">Saved Results</div>
+            <div class="card-desc">View your stored calculations</div>
+        </a>
+
+        <!-- About App Card -->
+        <a href="about.html" class="feature-card" id="aboutCard" data-analytic="about">
+            <div class="card-icon">ℹ️</div>
+            <div class="card-title">About App</div>
+            <div class="card-desc">Version & student guide</div>
+        </a>
+    </div>
+
+    <!-- simple footer -->
+    <footer class="app-footer">
+        <div class="footer-text">Made for Students ✨</div>
+    </footer>
+</div>
+
+<!-- lightweight vanilla JS: smooth click/tap animations, optional link handling, and offline friendly -->
+<script>
+    (function() {
+        // Ensure all card links work normally, but also add a micro interaction + analytics (optional)
+        // Provide a tiny additional ripple effect for modern touch devices to improve feedback.
+        // This is completely optional and does not break functionality.
+        
+        // Get all feature cards (anchor tags with class feature-card)
+        const cards = document.querySelectorAll('.feature-card');
+        
+        // Function to add a momentary 'active' class for better UX (already uses :active in CSS)
+        // But we can also manage a short ripple effect to highlight the touch.
+        if (cards.length) {
+            cards.forEach(card => {
+                // For better tactile feedback on both mouse and touch
+                card.addEventListener('mousedown', (e) => {
+                    // brief style enhancement (not necessary but elegant)
+                    card.style.transition = 'transform 0.08s linear';
+                    // revert after a short time
+                    const revert = () => {
+                        card.style.transition = '';
+                        card.removeEventListener('mouseup', revert);
+                        card.removeEventListener('mouseleave', revert);
+                    };
+                    card.addEventListener('mouseup', revert, { once: true });
+                    card.addEventListener('mouseleave', revert, { once: true });
+                });
+                
+                // For touch devices: adds a vibration-free animation but ensure default action works
+                card.addEventListener('touchstart', (e) => {
+                    // only add visual mini-scale effect using class toggle? we use css active already.
+                    // but we can just let the css handle transform:scale
+                    // To avoid conflicts we do nothing extra because CSS :active already does scale(0.97)
+                    // However, some touch browsers might have ~300ms delay, but fine.
+                    // Also we ensure we don't interfere with navigation
+                }, { passive: true });
+                
+                // Additionally, optional console logging for analytics (no external deps)
+                card.addEventListener('click', (e) => {
+                    // Just for demonstration: log user action for debugging or future use.
+                    // Does not block navigation since href is present.
+                    const analyticName = card.getAttribute('data-analytic') || 'unknown';
+                    console.log(`[Navigation] Opening: ${analyticName} page → ${card.getAttribute('href')}`);
+                    // Note: you could store last action in localStorage to remember state, but not needed.
+                    // We keep it lightweight and offline-friendly.
+                });
+            });
+        }
+        
+        // Add a small guard for offline friendly: if any link fails or is missing, but we assume .html files exist.
+        // Since it's a multipage app, we keep links as standard.
+        
+        // Optional: for extra material touch ripple (simple version)
+        function createRippleEffect(event, element) {
+            // lightweight ripple if needed, but due to cards being links with transform we avoid heavy DOM changes.
+            // To maintain cleanliness we don't inject extra divs for ripple.
+        }
+        
+        // dynamic adjustment for high-res screens: just make sure grid remains clean
+        // Additionally, we can preload a tiny style to improve perceived performance.
+        
+        // Since we want "offline-friendly" all assets are local, no external fonts besides system fonts.
+        // All icons are emoji/unicode, no external images needed. Perfectly offline.
+        
+        // Optional: save something in sessionStorage to indicate first visit? but not needed.
+        
+        // simple check: if any card fails to navigate due to missing .html, we provide fallback in console.
+        // But actual pages (gpa.html, percentage.html, etc.) would be created by developer separately.
+        // The requirement is just the homepage, linking to those files.
+        
+        // Additional micro interaction: simulate a 'selected' bounce on card load (optional entrance animation)
+        // add a staggered animation for each card
+        const style = document.createElement('style');
+        style.textContent = `
+            .feature-card {
+                animation: cardFadeUp 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1) backwards;
+            }
+            .feature-card:nth-child(1) { animation-delay: 0.05s; }
+            .feature-card:nth-child(2) { animation-delay: 0.1s; }
+            .feature-card:nth-child(3) { animation-delay: 0.15s; }
+            .feature-card:nth-child(4) { animation-delay: 0.2s; }
+            @keyframes cardFadeUp {
+                0% {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Ensure that for keyboards / accessibility, focus styles are visible.
+        // improve focus ring for accessibility
+        const focusStyle = document.createElement('style');
+        focusStyle.textContent = `
+            .feature-card:focus-visible {
+                outline: 3px solid #2c6e9e;
+                outline-offset: 4px;
+                border-radius: 24px;
+                transform: scale(0.98);
+                background: white;
+            }
+            body {
+                scroll-behavior: smooth;
+            }
+        `;
+        document.head.appendChild(focusStyle);
+        
+        // small feature: On window resize, re-evaluate but not needed, grid is responsive.
+        // Also we can add a console log that app is ready (offline friendly check)
+        console.log('Student GPA & Marks Calculator Homepage — fully responsive and ready. All links are functional.');
+        
+        // Since Material Design style includes shadows + roundness, add subtle meta theming
+        const metaTheme = document.createElement('meta');
+        metaTheme.name = "theme-color";
+        metaTheme.content = "#cfdef3";
+        document.head.appendChild(metaTheme);
+        
+        // For iOS Safari status bar appearance
+        const metaStatus = document.createElement('meta');
+        metaStatus.name = "apple-mobile-web-app-status-bar-style";
+        metaStatus.content = "default";
+        document.head.appendChild(metaStatus);
+        
+        // optional: provide an "offline mode" indicator if network is offline but not required.
+        if (!navigator.onLine) {
+            const offlineMsg = document.createElement('div');
+            offlineMsg.textContent = "📴 Offline mode — pages need to be cached locally";
+            offlineMsg.style.backgroundColor = "rgba(0,0,0,0.7)";
+            offlineMsg.style.color = "white";
+            offlineMsg.style.fontSize = "12px";
+            offlineMsg.style.padding = "4px 12px";
+            offlineMsg.style.borderRadius = "40px";
+            offlineMsg.style.position = "fixed";
+            offlineMsg.style.bottom = "12px";
+            offlineMsg.style.left = "12px";
+            offlineMsg.style.zIndex = "999";
+            offlineMsg.style.backdropFilter = "blur(5px)";
+            offlineMsg.style.pointerEvents = "none";
+            offlineMsg.style.fontWeight = "400";
+            document.body.appendChild(offlineMsg);
+            setTimeout(() => {
+                offlineMsg.style.opacity = "0.8";
+            }, 100);
+        }
+        
+        // add touch ripple only for cards (optional but modern)
+        // no external libraries, pure css + js micro feedback:
+        if ('ontouchstart' in window) {
+            // additional visual feedback for touch - we can mimic by applying a temporary class
+            // but we already have :active transform. That's sufficient.
+            // but we can add small "ink" effect for fun
+            function addTemporaryClass(card) {
+                card.style.transform = 'scale(0.97)';
+                setTimeout(() => {
+                    if (card) card.style.transform = '';
+                }, 120);
+            }
+            cards.forEach(card => {
+                card.addEventListener('touchstart', (e) => {
+                    addTemporaryClass(card);
+                }, { passive: true });
+            });
+        }
+    })();
+</script>
+</body>
+</html>
