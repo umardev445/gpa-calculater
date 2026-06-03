@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>Privacy Policy - Student GPA & Marks Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(145deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            padding: 20px 16px 40px;
+        }
+
+        /* main container - mobile first */
+        .app-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Header with back button */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            color: #1e2f3a;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .back-btn:active {
+            transform: scale(0.94);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        @media (hover: hover) {
+            .back-btn:hover {
+                transform: translateY(-2px);
+                background: white;
+            }
+        }
+
+        .page-title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            background: linear-gradient(115deg, #1f2f3a, #2c3e50);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        /* main content card */
+        .privacy-card {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(0px);
+            border-radius: 28px;
+            padding: 24px 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            animation: fadeSlideUp 0.4s ease;
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* section headers */
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e4a6e;
+            margin: 24px 0 12px 0;
+            padding-bottom: 6px;
+            border-bottom: 3px solid #cbdde6;
+            display: inline-block;
+        }
+
+        .first-title {
+            margin-top: 8px;
+        }
+
+        .subsection-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #2c6280;
+            margin: 18px 0 8px 0;
+        }
+
+        .text-content {
+            font-size: 0.95rem;
+            line-height: 1.55;
+            color: #2c4a5e;
+            margin-bottom: 16px;
+        }
+
+        .highlight-box {
+            background: #eef3fc;
+            border-left: 4px solid #2c6e9e;
+            padding: 14px 18px;
+            border-radius: 18px;
+            margin: 16px 0;
+            font-size: 0.9rem;
+        }
+
+        .data-badge {
+            background: #e8f0f5;
+            border-radius: 40px;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+            color: #1f6e93;
+        }
+
+        .bullet-list {
+            padding-left: 24px;
+            margin: 12px 0;
+        }
+
+        .bullet-list li {
+            margin: 8px 0;
+            line-height: 1.45;
+            color: #2c5a72;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.7rem;
+            color: #5f7f8f;
+            padding: 12px;
+            border-top: 1px solid rgba(90, 110, 120, 0.15);
+        }
+
+        .last-updated {
+            background: rgba(44, 110, 158, 0.1);
+            border-radius: 40px;
+            padding: 8px 16px;
+            display: inline-block;
+            font-size: 0.7rem;
+            color: #2c6e9e;
+            margin-bottom: 20px;
+        }
+
+        hr {
+            margin: 20px 0;
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #bdd4e0, transparent);
+        }
+
+        /* responsive */
+        @media (min-width: 600px) {
+            body {
+                padding: 32px 24px;
+            }
+            .page-title {
+                font-size: 2.2rem;
+            }
+            .privacy-card {
+                padding: 32px 28px;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .text-content {
+                font-size: 1rem;
+            }
+        }
+
+        /* touch friendly */
+        .back-btn, .action-btn {
+            cursor: pointer;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #b8d0e0;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #2c6e9e;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-outline:active {
+            transform: scale(0.96);
+            background: white;
+        }
+
+        .btn-outline-danger {
+            border-color: #e0b4b4;
+            color: #bc6f6f;
+        }
+
+        .btn-outline-danger:active {
+            background: #ffe0e0;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <!-- Header with back button -->
+    <div class="header">
+        <a href="index.html" class="back-btn" aria-label="Back to Home">←</a>
+        <h1 class="page-title">Privacy Policy</h1>
+    </div>
+
+    <!-- Main Privacy Content Card -->
+    <div class="privacy-card">
+        <div class="last-updated" id="lastUpdatedDate">
+            📅 Last updated: January 2026
+        </div>
+
+        <p class="text-content">
+            <strong>Student GPA & Marks Calculator</strong> ("we", "our", or "the app") is committed to protecting your privacy. 
+            This Privacy Policy explains how we handle your information when you use our web application.
+        </p>
+
+        <!-- Data Collection Section -->
+        <h2 class="section-title first-title">📋 Data Collection</h2>
+        <div class="data-badge">100% Local Storage • No Servers</div>
+        <p class="text-content">
+            <strong>We do NOT collect, transmit, or share any personal data.</strong> All information you enter (subjects, marks, GPA results, percentage calculations) 
+            is stored exclusively on your own device using your browser's <strong>localStorage</strong>. No data is sent to any external server, cloud, or third party.
+        </p>
+
+        <div class="highlight-box">
+            ✅ <strong>What we store locally on your device:</strong><br>
+            • Subject names, marks obtained, and credit hours (for GPA calculations)<br>
+            • Calculated GPA and Percentage results that you choose to save<br>
+            • Timestamps of when results were saved<br>
+            • App preferences (if any)
+        </div>
+
+        <h2 class="section-title">🔒 How Your Data Is Used</h2>
+        <p class="text-content">
+            The data stored on your device is used <strong>only for the core functionality</strong> of the app:
+        </p>
+        <ul class="bullet-list">
+            <li>📊 Calculating your GPA based on marks and credit hours</li>
+            <li>📈 Computing percentage scores from your marks</li>
+            <li>💾 Displaying your saved calculation history</li>
+            <li>📚 Allowing you to manage, delete, or clear your data</li>
+        </ul>
+
+        <h2 class="section-title">🗑️ Data Control & Deletion</h2>
+        <p class="text-content">
+            You have <strong>full control</strong> over all data stored by this app:
+        </p>
+        <ul class="bullet-list">
+            <li>🗑️ <strong>Delete individual results</strong> from the Saved Results page</li>
+            <li>🧹 <strong>Clear all saved results</strong> with one click</li>
+            <li>🔄 <strong>Reset subjects</strong> in the GPA Calculator at any time</li>
+            <li>📱 <strong>Clear browser data</strong> – removing localStorage will erase all app data</li>
+        </ul>
+
+        <div class="action-buttons" id="actionButtons">
+            <button class="btn-outline" id="explainStorageBtn">ℹ️ How to clear data</button>
+            <button class="btn-outline btn-outline-danger" id="simulateClearBtn">🧹 Clear Demo Data (optional)</button>
+        </div>
+
+        <h2 class="section-title">🌐 Offline-First & No Tracking</h2>
+        <p class="text-content">
+            This web app works <strong>completely offline</strong> once loaded. We do not use:
+        </p>
+        <ul class="bullet-list">
+            <li>❌ Analytics cookies or trackers (Google Analytics, etc.)</li>
+            <li>❌ Third-party advertising networks</li>
+            <li>❌ External fonts or CDNs that could log your IP</li>
+            <li>❌ Any form of telemetry or crash reporting</li>
+        </ul>
+        <p class="text-content">
+            The app uses only system fonts and local assets. Your usage remains entirely private to your browser.
+        </p>
+
+        <h2 class="section-title">👶 Children's Privacy</h2>
+        <p class="text-content">
+            Our app is designed for students of all ages. Since we collect <strong>no personal information whatsoever</strong> and store nothing outside the user's device, 
+            there are no special concerns regarding children's privacy under COPPA or similar regulations.
+        </p>
+
+        <h2 class="section-title">🔧 Third-Party Services</h2>
+        <p class="text-content">
+            This application does <strong>not integrate any third-party services, APIs, or external libraries</strong> that could access your data. 
+            All code runs locally in your browser. No external requests are made except for loading this page itself.
+        </p>
+
+        <h2 class="section-title">📱 LocalStorage Details</h2>
+        <p class="text-content">
+            The app uses browser localStorage to persist your data between sessions. This data:
+        </p>
+        <ul class="bullet-list">
+            <li>🔐 Never leaves your device</li>
+            <li>📁 Is isolated to this web app's origin (no other websites can access it)</li>
+            <li>🧹 Can be cleared at any time via browser settings or the app's "Clear All" buttons</li>
+            <li>💻 Remains until you explicitly delete it or clear browser data</li>
+        </ul>
+
+        <div class="highlight-box">
+            💡 <strong>Tip:</strong> To completely remove all app data, go to your browser settings → Privacy → Clear site data for this website, or use the "Clear All Results" button in the Saved Results page.
+        </div>
+
+        <h2 class="section-title">📧 Contact</h2>
+        <p class="text-content">
+            Since this app is fully offline and does not collect any contact information, we don't have a support server. 
+            However, if you have privacy-related questions about how this app functions, you can inspect the source code 
+            or contact the developer through the platform where you obtained this app.
+        </p>
+
+        <hr>
+
+        <p class="text-content" style="font-size: 0.85rem; font-style: italic;">
+            By using this application, you acknowledge that all data processing occurs locally on your device 
+            and that no information is transmitted externally. You retain complete ownership and control over your data.
+        </p>
+
+        <div id="notificationMessage" style="margin-top: 16px;"></div>
+    </div>
+
+    <div class="footer-note">
+        🔒 Privacy by design — Your data, your device, your control
+    </div>
+</div>
+
+<script>
+    (function() {
+        // DOM elements
+        const explainBtn = document.getElementById('explainStorageBtn');
+        const simulateClearBtn = document.getElementById('simulateClearBtn');
+        const notificationDiv = document.getElementById('notificationMessage');
+        const lastUpdatedSpan = document.getElementById('lastUpdatedDate');
+
+        // Set dynamic last updated date
+        const today = new Date();
+        const formattedDate = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        if (lastUpdatedSpan) {
+            lastUpdatedSpan.innerHTML = `📅 Last updated: ${formattedDate}`;
+        }
+
+        // Helper function to show temporary message
+        function showMessage(message, isError = false) {
+            if (!notificationDiv) return;
+            notificationDiv.innerHTML = `
+                <div style="background: ${isError ? '#ffe0e0' : '#e0f0e8'}; color: ${isError ? '#a14545' : '#2c6e4f'}; 
+                            padding: 12px 16px; border-radius: 20px; font-size: 0.85rem; 
+                            border-left: 4px solid ${isError ? '#d9534f' : '#4cae4c'}; 
+                            animation: fadeSlideUp 0.2s ease;">
+                    ${message}
+                </div>
+            `;
+            setTimeout(() => {
+                if (notificationDiv) {
+                    notificationDiv.innerHTML = '';
+                }
+            }, 3500);
+        }
+
+        // Explain how to clear data (educational)
+        function explainClearData() {
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            let instructions = "";
+            if (isMobile) {
+                instructions = "📱 <strong>On mobile browsers:</strong><br>• Chrome: Settings → Site Settings → Storage → Clear data<br>• Safari: Settings → Safari → Clear History and Website Data<br>• Or use 'Clear All Results' in Saved Results page.";
+            } else {
+                instructions = "💻 <strong>On desktop:</strong><br>• Press F12 → Application → Local Storage → Clear<br>• Or use browser settings → Privacy → Clear site data<br>• Or click 'Clear All Results' in the Saved Results page.";
+            }
+            showMessage(instructions, false);
+        }
+
+        // Simulate clearing ONLY demo data (just shows what would be cleared, doesn't actually delete if user hasn't consented)
+        // But we will add a safe demo clear that only affects GPA/Percentage results if user chooses to.
+        // Provide an optional clear that deletes all saved results (with confirmation)
+        function simulateClearData() {
+            // This will show what localStorage keys are used and optionally allow clearing them
+            const confirmClear = confirm(
+                "⚠️ This will delete ALL saved GPA & Percentage results from this app on your device.\n\n" +
+                "Subjects added in GPA Calculator will also be cleared.\n\n" +
+                "This action cannot be undone within the app. Do you want to proceed?"
+            );
+            
+            if (confirmClear) {
+                const keysToClear = [
+                    'savedResultsList',      // saved results from both calculators
+                    'gpaCalculatorSubjects', // subjects added in GPA page
+                    'lastGpaResult'          // last calculated GPA display
+                ];
+                
+                let clearedCount = 0;
+                for (let key of keysToClear) {
+                    if (localStorage.getItem(key) !== null) {
+                        localStorage.removeItem(key);
+                        clearedCount++;
+                    }
+                }
+                
+                if (clearedCount > 0) {
+                    showMessage(`✅ Cleared ${clearedCount} storage item(s). All GPA subjects and saved results have been reset.`, false);
+                    // Optional: also notify user that page will refresh or they need to reload manually
+                    setTimeout(() => {
+                        const reloadConfirm = confirm("Data cleared! Do you want to reload the page to see changes? (Recommended)");
+                        if (reloadConfirm) {
+                            window.location.reload();
+                        }
+                    }, 500);
+                } else {
+                    showMessage("ℹ️ No app data found to clear. You haven't saved any results yet.", false);
+                }
+            }
+        }
+
+        // event listeners
+        if (explainBtn) {
+            explainBtn.addEventListener('click', explainClearData);
+        }
+        if (simulateClearBtn) {
+            simulateClearBtn.addEventListener('click', simulateClearData);
+        }
+
+        // Also add storage key reference display - show what's stored (optional)
+        function displayCurrentStorageStatus() {
+            const savedResults = localStorage.getItem('savedResultsList');
+            const subjects = localStorage.getItem('gpaCalculatorSubjects');
+            if (savedResults || subjects) {
+                // silently note, no intrusive notifications
+                console.log("Privacy Page: localStorage contains user data as expected.");
+            }
+        }
+        displayCurrentStorageStatus();
+
+        // Additional: add a small note about localStorage being local
+        const noteCard = document.createElement('div');
+        noteCard.style.marginTop = '16px';
+        noteCard.style.fontSize = '0.7rem';
+        noteCard.style.textAlign = 'center';
+        noteCard.style.color = '#68869a';
+        noteCard.innerHTML = '🔐 All data stored locally via localStorage — never transmitted online';
+        const privacyCard = document.querySelector('.privacy-card');
+        if (privacyCard && !document.querySelector('.extra-note')) {
+            const existing = privacyCard.querySelector('.footer-note-inside');
+            if (!existing) {
+                const extraNote = document.createElement('div');
+                extraNote.className = 'extra-note';
+                extraNote.style.marginTop = '20px';
+                extraNote.style.padding = '12px';
+                extraNote.style.background = '#f0f5f9';
+                extraNote.style.borderRadius = '20px';
+                extraNote.style.fontSize = '0.7rem';
+                extraNote.style.textAlign = 'center';
+                extraNote.style.color = '#416f88';
+                extraNote.innerHTML = '📂 <strong>Storage location:</strong> This browser only. Data persists until you clear browser storage or use the app\'s delete functions.';
+                privacyCard.appendChild(extraNote);
+            }
+        }
+    })();
+</script>
+</body>
+</html>
